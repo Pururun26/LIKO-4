@@ -96,11 +96,11 @@ void liko4_save_init(void) {
     if (data && size == (int)sizeof(storage_data)) {
         memcpy(storage_data, data, sizeof(storage_data));
         UnloadFileData(data);
-        TraceLog(LOG_INFO, "PIKO-4: Save loaded from '%s'.", save_path);
+        TraceLog(LOG_INFO, "LIKO-4: Save loaded from '%s'.", save_path);
     } else {
         if (data) UnloadFileData(data);
         memset(storage_data, 0, sizeof(storage_data));
-        TraceLog(LOG_INFO, "PIKO-4: No save, starting fresh.");
+        TraceLog(LOG_INFO, "LIKO-4: No save, starting fresh.");
     }
 #endif
 
@@ -138,9 +138,9 @@ bool liko4_save_all(void) {
     int ok = js_localstorage_save(storage_data, (int)sizeof(storage_data));
 
     if (ok) {
-        TraceLog(LOG_INFO, "PIKO-4: Save written to localStorage.");
+        TraceLog(LOG_INFO, "LIKO-4: Save written to localStorage.");
     } else {
-        TraceLog(LOG_WARNING, "PIKO-4: Failed to write localStorage.");
+        TraceLog(LOG_WARNING, "LIKO-4: Failed to write localStorage.");
     }
     return ok != 0;
 
@@ -148,9 +148,9 @@ bool liko4_save_all(void) {
     // Native: файл
     bool ok = SaveFileData(save_path, storage_data, sizeof(storage_data));
     if (ok) {
-        TraceLog(LOG_INFO, "PIKO-4: Save written to '%s'.", save_path);
+        TraceLog(LOG_INFO, "LIKO-4: Save written to '%s'.", save_path);
     } else {
-        TraceLog(LOG_WARNING, "PIKO-4: Failed to write '%s'.", save_path);
+        TraceLog(LOG_WARNING, "LIKO-4: Failed to write '%s'.", save_path);
     }
     return ok;
 #endif
