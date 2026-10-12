@@ -11,6 +11,7 @@ A tiny fantasy console for Lua. Built for making small 2D games fast.
 - Mouse and keyboard input
 - Save system — 64 slots × 8 bytes
 - Cartridges — single `.lk4` file (ZIP with `data/` inside)
+- 65536-character script limit — all `.lua` files in `scripts/` combined
 - Lua scripting with `require`
 - Single ~1 MB executable, no external DLLs
 - Windows, Linux, macOS and Web builds

@@ -42,7 +42,6 @@ static void call_lua(const char *name) {
 // ============================================================
 // Настройка package.path по папке игры
 // ============================================================
-
 static void setup_lua_path(lua_State *Lstate, const char *game_path) {
     const char *slash  = strrchr(game_path, '/');
     const char *bslash = strrchr(game_path, '\\');
@@ -63,14 +62,71 @@ static void setup_lua_path(lua_State *Lstate, const char *game_path) {
     lua_pop(Lstate, 1);
 }
 
+
+// ============================================================
+// Подсчёт символов во всех .lua файлах директории (рекурсивно)
+// ============================================================
+static long count_lua_chars(const char *dir) {
+    if (!DirectoryExists(dir)) return 0;
+
+    FilePathList entries = LoadDirectoryFiles(dir);
+    long total = 0;
+
+    for (unsigned i = 0; i < entries.count; i++) {
+        if (DirectoryExists(entries.paths[i])) {
+            total += count_lua_chars(entries.paths[i]);
+        } else {
+            size_t len = strlen(entries.paths[i]);
+            if (len >= 4 && strcmp(entries.paths[i] + len - 4, ".lua") == 0) {
+                int size = GetFileLength(entries.paths[i]);
+                if (size > 0) total += size;
+            }
+        }
+    }
+
+    UnloadDirectoryFiles(entries);
+    return total;
+}
+
+// Возвращает директорию, в которой лежит game_path (директорию скриптов)
+static void get_scripts_dir(const char *game_path, char *out, size_t out_size) {
+    const char *slash  = strrchr(game_path, '/');
+    const char *bslash = strrchr(game_path, '\\');
+    if (bslash && (!slash || bslash > slash)) slash = bslash;
+
+    if (!slash) {
+        snprintf(out, out_size, ".");
+        return;
+    }
+
+    int dir_len = (int)(slash - game_path);
+    snprintf(out, out_size, "%.*s", dir_len, game_path);
+}
+
+
 // ============================================================
 // Перезагрузка игры (Ctrl+R)
 //   Перезагружает: Lua, спрайты, шрифт, звуки.
 //   НЕ трогает: окно, storage.bin, рендер-текстуру.
 // ============================================================
-
 static void reload_game(const char *game_path) {
     liko4_log("LIKO-4: Reloading...");
+
+    // 0. Проверка лимита символов скриптов (ДО закрытия старого Lua)
+    {
+        char scripts_dir[1024];
+        get_scripts_dir(game_path, scripts_dir, sizeof(scripts_dir));
+
+        long total = count_lua_chars(scripts_dir);
+        if (total > LIKO4_MAX_SCRIPT_CHARS) {
+            liko4_log("LIKO-4: script too large — %ld / %d chars (over by %ld)",
+                      total, LIKO4_MAX_SCRIPT_CHARS,
+                      total - LIKO4_MAX_SCRIPT_CHARS);
+            return;   // старая игра остаётся работать
+        }
+        liko4_log("LIKO-4: script size %ld / %d chars",
+                  total, LIKO4_MAX_SCRIPT_CHARS);
+    }
 
     // 1. Закрыть старый Lua, если был
     if (L) {
@@ -129,7 +185,6 @@ static void reload_game(const char *game_path) {
 // ============================================================
 // main
 // ============================================================
-
 int main(int argc, char **argv) {
     // ============================================================
     // 1. Логирование

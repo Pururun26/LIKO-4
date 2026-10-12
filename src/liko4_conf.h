@@ -40,3 +40,6 @@
 
 // Сохранение и загрузка
 #define LIKO4_SAVE_SLOTS 64
+
+// Максимум символов Lua-кода в картридже (все .lua файлы в scripts/)
+#define LIKO4_MAX_SCRIPT_CHARS 65536
