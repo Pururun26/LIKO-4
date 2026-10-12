@@ -1,0 +1,14 @@
+cmake -B build
+cmake --build build
+
+
+WEB
+
+cd /c/emsdk
+./emsdk activate latest
+source ./emsdk_env.sh
+emcc --version
+
+
+emcmake cmake -B build-web
+cmake --build build-web

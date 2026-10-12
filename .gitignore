@@ -1,0 +1,23 @@
+# Build artifacts (пересобираются)
+build/
+build-web/
+cmake-build-*/
+
+# Runtime (создаётся при запуске)
+save/
+tiny2d_log.txt
+
+# Test sandbox (песочница)
+test/
+
+# Архивы (пересобираются из src/data/)
+data.zip
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+Thumbs.db
+.DS_Store

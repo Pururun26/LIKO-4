@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>LIKO-4</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: #111;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+        #container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+        }
+        canvas {
+            image-rendering: pixelated;
+            display: block;
+            cursor: none;
+        }
+        #status {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-family: monospace;
+            font-size: 18px;
+            text-align: center;
+            pointer-events: none;
+        }
+        #status.hidden {
+            display: none;
+        }
+        #status.error {
+            color: #ff6b6b;
+            max-width: 80%;
+            word-break: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+    </div>
+    <div id="status">Loading...</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script>
+        var Module = {
+            noInitialRun: true,
+            canvas: (function() { return document.getElementById('canvas'); })(),
+            onRuntimeInitialized: async function() {
+                await loadCart();
+                document.getElementById('status').classList.add('hidden');
+                Module.callMain();
+            }
+        };
+
+        function setStatus(text, isError) {
+            const el = document.getElementById('status');
+            el.textContent = text;
+            if (isError) el.classList.add('error');
+        }
+
+        async function fetchCart() {
+            // 1. Read manifest
+            setStatus('Fetching liko-4.json...');
+            const cfgResp = await fetch('liko-4.json');
+            if (!cfgResp.ok) {
+                setStatus('liko-4.json not found. Place it next to liko-4.html.', true);
+                return null;
+            }
+
+            const cfg = await cfgResp.json();
+            const cartName = cfg.cart || 'game.lk4';
+
+            // 2. Fetch cart
+            setStatus('Fetching ' + cartName + '...');
+            const cartResp = await fetch(cartName);
+            if (!cartResp.ok) {
+                setStatus(cartName + ' not found.', true);
+                return null;
+            }
+
+            return await cartResp.arrayBuffer();
+        }
+
+        async function loadCart() {
+            try {
+                const buf = await fetchCart();
+                if (!buf) return;
+
+                setStatus('Unpacking...');
+
+                const zip = await JSZip.loadAsync(buf);
+                const entries = Object.entries(zip.files);
+                let loaded = 0;
+
+                for (const [path, file] of entries) {
+                    if (file.dir) continue;
+
+                    const content = await file.async('uint8array');
+
+                    // Support both layouts:
+                    //   data/scripts/main.lua  (zipped folder data/)
+                    //   scripts/main.lua       (zipped contents of data/)
+                    const cleanPath = path.startsWith('data/')
+                        ? path.substring(5)
+                        : path;
+
+                    const fullPath = '/data/' + cleanPath;
+                    const dir = fullPath.substring(0, fullPath.lastIndexOf('/'));
+
+                    try {
+                        FS.mkdirTree(dir);
+                    } catch (e) {
+                        // folder already exists — ok
+                    }
+
+                    FS.writeFile(fullPath, content);
+                    loaded++;
+                    setStatus(`Unpacking... ${loaded}/${entries.length}`);
+                }
+
+                console.log('[LIKO-4] extracted', loaded, 'files');
+            } catch (e) {
+                console.error('[LIKO-4] cart error:', e);
+                setStatus('Failed to load cart: ' + e.message, true);
+            }
+        }
+    </script>
+    {{{ SCRIPT }}}
+</body>
+</html>
