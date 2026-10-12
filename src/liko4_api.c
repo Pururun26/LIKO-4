@@ -86,12 +86,12 @@ void liko4_load_font(const char* filepath) {
         pico_font = LoadFontFromImage(img, MAGENTA, 32);
         UnloadImage(img);
         font_loaded = true;
-        TraceLog(LOG_INFO, "LIKO-4 Font '%s' loaded successfully.", filepath);
+        TraceLog(LOG_INFO, "LIKO-4: Font '%s' loaded successfully.", filepath);
     } else {
         pico_font = GetFontDefault();
         font_size = 10.0f;
         font_loaded = false;
-        TraceLog(LOG_WARNING, "LIKO-4 Font '%s' not found. Using default.", filepath);
+        TraceLog(LOG_WARNING, "LIKO-4: Font '%s' not found. Using default.", filepath);
     }
 }
 
