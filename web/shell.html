@@ -71,10 +71,10 @@
 
         async function fetchCart() {
             // 1. Read manifest
-            setStatus('Fetching liko-4.json...');
-            const cfgResp = await fetch('liko-4.json');
+            setStatus('Fetching liko4.json...');
+            const cfgResp = await fetch('liko4.json');
             if (!cfgResp.ok) {
-                setStatus('liko-4.json not found. Place it next to liko-4.html.', true);
+                setStatus('liko4.json not found. Place it next to liko4.html.', true);
                 return null;
             }
 
