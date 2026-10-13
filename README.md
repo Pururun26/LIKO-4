@@ -19,6 +19,10 @@ A tiny fantasy console for Lua. Built for making small 2D games fast.
 ## The main idea  
 LIKO-4 is the materialization of a fantasy console that never existed but could have: drawing inspiration from PICO-4 — an imaginary younger model in the PICO lineup, conceived and drawn by fans long before the runtime appeared.
 
+The name LIKO-4 is inspired by [LIKO-12](https://github.com/LIKO-12/LIKO-12?ysclid=mv6nght88j992711274) by Rami-Sabbagh, as part of a series of open-source consoles.
+
+Unlike LIKO-12, LIKO-4 is not written in LOVE2D; it is written from scratch using raylib.
+
 ---
 
 ## Font
