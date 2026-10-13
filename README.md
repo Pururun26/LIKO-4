@@ -16,6 +16,9 @@ A tiny fantasy console for Lua. Built for making small 2D games fast.
 - Single ~1 MB executable, no external DLLs
 - Windows, Linux, macOS and Web builds
 
+## The main idea  
+LIKO-4 is the materialization of a fantasy console that never existed, but could have: a clone of PICO-4 — an imaginary younger model in the PICO line, which fans came up with and drew long before the runtime appeared.
+
 ---
 
 ## Font
