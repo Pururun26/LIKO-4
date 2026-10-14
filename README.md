@@ -350,10 +350,10 @@ local elapsed = time() / 1000
 circ(80 + math.sin(elapsed * 2) * 30, 80, 5, 3)
 
 -- idle
-local last = load(0)
+local last = dget(0)
 local now = utime()
 coins = coins + (now - last) * 0.1
-save(0, now)
+dset(0, now)
 ```
 
 ### Sound
@@ -411,12 +411,12 @@ tone(0, 15, 90, 3)
 ### Save
 
 ```lua
-save(pos, value)   -- write value (int64) to slot pos (0–63)
-load(pos)          -- read value from slot pos
+dset(pos, value)   -- write value (int64) to slot pos (0–63)
+dget(pos)          -- read value from slot pos
 ```
 
 - On desktop: auto-saved to `save/storage.bin` on window close and every 10 minutes.
-- On web: saved to browser `localStorage` immediately on every `save()`.
+- On web: saved to browser `localStorage` immediately on every `dset()`.
 
 ---
 

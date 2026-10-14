@@ -122,7 +122,7 @@ void liko4_save_init(const char *save_name) {
 // Публичный API
 // ============================================================
 
-void liko4_save(int pos, int64_t value) {
+void liko4_dset(int pos, int64_t value) {
     if (pos < 0 || pos >= LIKO4_SAVE_SLOTS) return;
     if (!storage_loaded) liko4_save_init(NULL);
     storage_data[pos] = value;
@@ -132,7 +132,7 @@ void liko4_save(int pos, int64_t value) {
 #endif
 }
 
-int64_t liko4_load(int pos) {
+int64_t liko4_dget(int pos) {
     if (pos < 0 || pos >= LIKO4_SAVE_SLOTS) return 0;
     if (!storage_loaded) liko4_save_init(NULL);
     return storage_data[pos];

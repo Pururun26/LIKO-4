@@ -219,16 +219,16 @@ static int l_tone(lua_State *L) {
 }
 
 // Сохранения
-static int l_save(lua_State *L) {
+static int l_dset(lua_State *L) {
     int pos = (int)luaL_checkinteger(L, 1);
     lua_Integer val = luaL_checkinteger(L, 2);
-    liko4_save(pos, (int64_t)val);
+    liko4_dset(pos, (int64_t)val);
     return 0;
 }
 
-static int l_load(lua_State *L) {
+static int l_dget(lua_State *L) {
     int pos = (int)luaL_checkinteger(L, 1);
-    lua_pushinteger(L, (lua_Integer)liko4_load(pos));
+    lua_pushinteger(L, (lua_Integer)liko4_dget(pos));
     return 1;
 }
 
@@ -287,6 +287,6 @@ void liko4_register_api(lua_State *Lstate) {
     reg(Lstate, "tone",   l_tone);
 
     // сохранения
-    reg(Lstate, "save",   l_save);
-    reg(Lstate, "load",   l_load);
+    reg(Lstate, "dset",   l_dset);
+    reg(Lstate, "dget",   l_dget);
 }
