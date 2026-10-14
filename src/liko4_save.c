@@ -100,6 +100,10 @@ void liko4_save_init(const char *save_name) {
     int size = 0;
     unsigned char *data = NULL;
 
+    if (FileExists(save_path)) {
+        data = LoadFileData(save_path, &size);
+    }
+
     if (data && size == (int)sizeof(storage_data)) {
         memcpy(storage_data, data, sizeof(storage_data));
         UnloadFileData(data);
