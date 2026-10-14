@@ -58,13 +58,14 @@ static bool    storage_loaded = false;
 
 #ifndef __EMSCRIPTEN__
 static char save_path[1088];
+static char save_name_global[128] = "storage";
 #endif
 
 // ============================================================
 // Инициализация
 // ============================================================
 
-void liko4_save_init(void) {
+void liko4_save_init(const char *save_name) {
 #ifdef __EMSCRIPTEN__
     // Web: читаем из localStorage под ключом 'storage'
     memset(storage_data, 0, sizeof(storage_data));
@@ -78,6 +79,12 @@ void liko4_save_init(void) {
     }
 
 #else
+    // Запомнить имя для ленивой инициализации
+    if (save_name && save_name[0]) {
+        strncpy(save_name_global, save_name, sizeof(save_name_global) - 1);
+        save_name_global[sizeof(save_name_global) - 1] = '\0';
+    }
+    
     // Native: папка save/ рядом с exe
     char save_dir[1024];
     snprintf(save_dir, sizeof(save_dir),
@@ -88,10 +95,10 @@ void liko4_save_init(void) {
     }
 
     snprintf(save_path, sizeof(save_path),
-             "%s/storage.bin", save_dir);
+             "%s/%s.bin", save_dir, save_name_global);
 
     int size = 0;
-    unsigned char *data = LoadFileData(save_path, &size);
+    unsigned char *data = NULL;
 
     if (data && size == (int)sizeof(storage_data)) {
         memcpy(storage_data, data, sizeof(storage_data));
@@ -113,20 +120,17 @@ void liko4_save_init(void) {
 
 void liko4_save(int pos, int64_t value) {
     if (pos < 0 || pos >= LIKO4_SAVE_SLOTS) return;
-    if (!storage_loaded) liko4_save_init();
+    if (!storage_loaded) liko4_save_init(NULL);
     storage_data[pos] = value;
 
 #ifdef __EMSCRIPTEN__
-    // Web: пишем в localStorage сразу — иначе потеряется при закрытии вкладки
     js_localstorage_save(storage_data, (int)sizeof(storage_data));
-#else
-    // Native: только в память, сохранение при закрытии или автосейве
 #endif
 }
 
 int64_t liko4_load(int pos) {
     if (pos < 0 || pos >= LIKO4_SAVE_SLOTS) return 0;
-    if (!storage_loaded) liko4_save_init();
+    if (!storage_loaded) liko4_save_init(NULL);
     return storage_data[pos];
 }
 

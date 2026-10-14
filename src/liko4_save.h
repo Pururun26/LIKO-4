@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 // Инициализация
-void liko4_save_init(void);
+void liko4_save_init(const char *save_name);
 
 // Чтение/запись (в память)
 void    liko4_save(int pos, int64_t value);

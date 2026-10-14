@@ -250,6 +250,26 @@ int main(int argc, char **argv) {
 
     liko4_log("game path: %s", game_path);
 
+    char save_name[128] = "storage";
+
+#ifndef __EMSCRIPTEN__
+    if (cart_path[0]) {
+        const char *base = cart_path;
+        const char *s1 = strrchr(cart_path, '/');
+        const char *s2 = strrchr(cart_path, '\\');
+        if (s2 && (!s1 || s2 > s1)) base = s2 + 1;
+        else if (s1)               base = s1 + 1;
+
+        snprintf(save_name, sizeof(save_name), "%s", base);
+
+        // Отрезаем расширение
+        char *dot = strrchr(save_name, '.');
+        if (dot) *dot = '\0';
+
+        if (!save_name[0]) snprintf(save_name, sizeof(save_name), "storage");
+    }
+#endif
+
     // ============================================================
     // 3. Raylib
     // ============================================================
@@ -261,7 +281,7 @@ int main(int argc, char **argv) {
     target = LoadRenderTexture(LIKO4_WIDTH, LIKO4_HEIGHT);
     SetTextureFilter(target.texture, TEXTURE_FILTER_POINT);
 
-    liko4_save_init();
+    liko4_save_init(save_name);
 
     // ============================================================
     // 4. Первая загрузка игры
@@ -273,7 +293,7 @@ int main(int argc, char **argv) {
     }
 
     int autosave_counter = 0;
-    const int AUTOSAVE_INTERVAL = 60 * 10 * 60;
+    const int AUTOSAVE_INTERVAL = 60 * 60;
 
     // ============================================================
     // 5. Главный цикл
