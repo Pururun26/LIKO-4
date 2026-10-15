@@ -89,6 +89,16 @@ Open `http://localhost:8000/liko4.html`.
 
 ---
 
+## Command line
+
+liko4.exe run game.lk4 next to the exe, or data/ in dev mode
+liko4.exe mygame.lk4 run a specific cartridge
+liko4.exe --license show licenses
+liko4.exe --help show usage
+liko4.exe --version show version
+
+---
+
 ## Cartridges
 
 A cartridge is a single `.lk4` file — a ZIP archive containing a `data/` folder:
