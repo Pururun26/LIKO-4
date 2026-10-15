@@ -1,3 +1,5 @@
+#include "liko4_console.h"
+
 #include "liko4_api.h"
 #include "liko4_api_lua.h"
 #include "liko4_conf.h"
@@ -5,6 +7,7 @@
 #include "liko4_sprites.h"
 #include "liko4_audio.h"
 #include "liko4_save.h"
+#include "liko4_license.h"
 
 #ifndef __EMSCRIPTEN__
 #include "liko4_cart.h"
@@ -186,6 +189,42 @@ static void reload_game(const char *game_path) {
 // main
 // ============================================================
 int main(int argc, char **argv) {
+    // ============================================================
+    // 0. Флаги командной строки (до инициализации окна)
+    // ============================================================
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "--license") == 0 ||
+            strcmp(argv[i], "--licence") == 0) {
+            liko4_console_attach();
+            printf("\n%s", LIKO4_LICENSE_TEXT);
+            fflush(stdout);
+            liko4_console_detach();
+            return 0;
+        }
+
+        if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
+            liko4_console_attach();
+            printf("\nLIKO-4 - a tiny fantasy console for Lua\n\n");
+            printf("Usage:\n");
+            printf("  liko4.exe                  run game.lk4 next to the exe,\n");
+            printf("                             or data/ in dev mode\n");
+            printf("  liko4.exe mygame.lk4       run a specific cartridge\n");
+            printf("  liko4.exe --license        show licenses\n");
+            printf("  liko4.exe --help           show this help\n");
+            printf("  liko4.exe --version        show version\n");
+            fflush(stdout);
+            liko4_console_detach();
+            return 0;
+        }
+
+        if (strcmp(argv[i], "--version") == 0 || strcmp(argv[i], "-v") == 0) {
+            liko4_console_attach();
+            printf("LIKO-4 v%s\n", LIKO4_VERSION);
+            fflush(stdout);
+            liko4_console_detach();
+            return 0;
+        }
+    }
     // ============================================================
     // 1. Логирование
     // ============================================================

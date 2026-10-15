@@ -9,6 +9,8 @@
 #define LIKO4_TITLE   "LIKO-4"
 #define LIKO4_FPS     60
 
+#define LIKO4_VERSION "1.3.0"
+
 
 // Палитра
 #define LIKO4_COLOR_COUNT 8

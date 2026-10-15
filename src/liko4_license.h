@@ -1,0 +1,53 @@
+#pragma once
+
+// ============================================================
+// Текст лицензии LIKO-4 и всех встроенных зависимостей.
+// Показывается по флагу --license.
+// ============================================================
+
+static const char *LIKO4_LICENSE_TEXT =
+"LIKO-4 - a tiny fantasy console for Lua\n"
+"Copyright (c) 2026 Pururun26\n"
+"\n"
+"MIT License\n"
+"\n"
+"Permission is hereby granted, free of charge, to any person obtaining a copy\n"
+"of this software and associated documentation files (the \"Software\"), to deal\n"
+"in the Software without restriction, including without limitation the rights\n"
+"to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n"
+"copies of the Software, and to permit persons to whom the Software is\n"
+"furnished to do so, subject to the following conditions:\n"
+"\n"
+"The above copyright notice and this permission notice shall be included in all\n"
+"copies or substantial portions of the Software.\n"
+"\n"
+"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n"
+"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n"
+"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n"
+"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n"
+"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n"
+"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n"
+"SOFTWARE.\n"
+"\n"
+"------------------------------------------------------------\n"
+"Bundled dependencies:\n"
+"\n"
+"  raylib - Copyright (c) Ramon Santamaria (@raysan5)\n"
+"    zlib License - https://www.raylib.com\n"
+"\n"
+"  Lua 5.4 - Copyright (c) Lua.org, PUC-Rio\n"
+"    MIT License - https://www.lua.org\n"
+"\n"
+"  miniz - Copyright (c) Rich Geldreich\n"
+"    MIT License - https://github.com/richgel999/miniz\n"
+"\n"
+"------------------------------------------------------------\n"
+"Bundled palette:\n"
+"\n"
+"  \"Pico micro\" by Space Sandwich\n"
+"    https://lospec.com/palette-list/pico-micro\n"
+"\n"
+"------------------------------------------------------------\n"
+"Cartridge assets (fonts, sprites, sounds, music) are supplied by\n"
+"each game, not by LIKO-4. See the cartridge's own documentation.\n"
+"\n";
